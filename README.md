@@ -1,2 +1,2 @@
-# rust-study
-rust study
+# Rust Study
+Studying rust language
