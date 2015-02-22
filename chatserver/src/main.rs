@@ -1,8 +1,8 @@
 use std::sync::{Arc, Mutex};
 use std::thread::Thread;
 use std::sync::mpsc::{channel, Sender};
-use std::old_io::{TcpListener, TcpStream};
-use std::old_io::{Acceptor, Listener};
+use std::net::*;
+use std::io::{Read, Write};
 use core::num::cast;
 
 extern crate core;
@@ -14,15 +14,15 @@ fn main() {
 	let mut txlist: Arc<Mutex<Vec<Sender<String>>>> = Arc::new(Mutex::new(Vec::new()));
 
 	let listener = TcpListener::bind("127.0.0.1:2345").unwrap(); //Server
-	let mut acceptor = listener.listen().unwrap();
+	//let mut acceptor = listener.listen().unwrap();
 
-	for stream in acceptor.incoming() {
+	for stream in listener.incoming() {
 		let strq = match stream {
 			Err(e) => { panic!("Connection Failed. {:?}", e); }
 			Ok(stream) => {
 
-				let mut recv_stream = stream.clone();
-				let mut send_stream = stream.clone();
+				let mut recv_stream = stream.try_clone().unwrap();
+				let mut send_stream = stream.try_clone().unwrap();
 
 				let read_txlist = txlist.clone();
 				let mut write_txlist = txlist.clone();
@@ -61,5 +61,5 @@ fn main() {
 		};
 	}
 
-	drop(acceptor);
+	drop(listener);
 }

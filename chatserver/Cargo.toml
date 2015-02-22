@@ -1,5 +1,5 @@
 [package]
 
 name = "chatserver"
-version = "0.1"
+version = "0.1.1"
 authors = ["KBuild <qwer7995@gmail.com>", "Perillamint <perillamint@gmail.com>"]
